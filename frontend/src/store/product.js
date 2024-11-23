@@ -3,7 +3,7 @@ import { create } from "zustand";
 export const useProductStore = create((set) => ({
     products: [],
     setProducts: (products) => set({products}),
-    createProduct: async (newProduct) => {
+    createProduct: async (newProduct ) => {
         if(!newProduct.name||!newProduct.price||!newProduct.image){
             return {success: false, message:"please fill all the details!"}
         }
@@ -19,4 +19,10 @@ export const useProductStore = create((set) => ({
         set((state) => ({ products: [...state.products, data.data] }));
         return {success: true, message:"successfully product created!"}
     },
+    fetchProducts: async () => {
+        const res = await fetch("/api/products");
+        const data = await res.json();
+        set({ products: data.data });
+    }
+
 }));
